@@ -9,10 +9,10 @@ app.use(express.json());
 
 // MySQL connection
 const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "993632",
-    database: "campus_care"
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME
 });
 
 // Check MySQL connection
@@ -468,6 +468,8 @@ app.post("/api/admin/login", (req, res) => {
     });
 });
 // Server start
-app.listen(5000, () => {
-    console.log("Server running on http://localhost:5000");
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running on port ${PORT}`);
 });
