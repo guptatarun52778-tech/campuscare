@@ -163,6 +163,10 @@ const blockedWords = [
     "bc",
     "kutta",
     "kutiya",
+    "lund",
+    "land",
+    "lauda",
+    "laudha",
 ];
 // Submit a complaint
 app.post("/api/complaints", (req, res) => {
