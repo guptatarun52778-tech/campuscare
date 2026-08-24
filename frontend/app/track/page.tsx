@@ -197,11 +197,11 @@ export default function TrackComplaint() {
 
             <div className="mt-6 text-center">
               <Link
-                href="/"
-                className="text-sm text-slate-500 hover:text-blue-400"
-              >
-                ← Back to Home
-              </Link>
+  href="/student-dashboard"
+  className="text-sm text-slate-500 hover:text-blue-400"
+>
+  ← Back to Dashboard
+</Link>
             </div>
           </div>
         </div>
