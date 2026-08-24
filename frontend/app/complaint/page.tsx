@@ -68,7 +68,7 @@ if (containsAbusiveLanguage) {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/complaints", {
+      const response = await fetch("https://campuscare-jb23.onrender.com/api/complaints", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

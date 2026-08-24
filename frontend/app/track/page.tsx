@@ -36,7 +36,7 @@ export default function TrackComplaint() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/complaints/${cleanId}`
+        `https://campuscare-jb23.onrender.com/api/complaints/${cleanId}`
       );
 
       const data = await response.json();

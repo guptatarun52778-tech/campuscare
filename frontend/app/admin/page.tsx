@@ -41,7 +41,7 @@ export default function AdminDashboard() {
         setError("");
 
         const response = await fetch(
-          "http://localhost:5000/api/admin/complaints"
+          "https://campuscare-jb23.onrender.com/api/admin/complaints"
         );
 
         const data = await response.json();
@@ -65,7 +65,7 @@ export default function AdminDashboard() {
   const updateStatus = async (id: number, status: string) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/admin/complaints/${id}/status`,
+        `https://campuscare-jb23.onrender.com/api/admin/complaints/${id}/status`,
         {
           method: "PUT",
           headers: {
