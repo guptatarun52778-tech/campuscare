@@ -177,6 +177,7 @@ const blockedWords = [
 // Submit a complaint
 app.post("/api/complaints", (req, res) => {
     const {
+        userId,
         name,
         email,
         category,
@@ -184,42 +185,44 @@ app.post("/api/complaints", (req, res) => {
         complaint
     } = req.body;
 
-    if (!category || !complaint) {
+    if (!userId || !category || !complaint) {
         return res.status(400).json({
-            message: "Category and complaint are required"
+            message: "User ID, category and complaint are required"
         });
     }
+
     const complaintText = complaint.trim();
 
-if (complaintText.length < 20) {
-    return res.status(400).json({
-        message: "Complaint must contain at least 20 characters."
-    });
-}
+    if (complaintText.length < 20) {
+        return res.status(400).json({
+            message: "Complaint must contain at least 20 characters."
+        });
+    }
 
-const containsAbusiveLanguage = blockedWords.some((word) =>
-    complaintText.toLowerCase().includes(word.toLowerCase())
-);
+    const containsAbusiveLanguage = blockedWords.some((word) =>
+        complaintText.toLowerCase().includes(word.toLowerCase())
+    );
 
-if (containsAbusiveLanguage) {
-    return res.status(400).json({
-        message:
-            "Please use respectful language. Abusive or inappropriate language is not allowed."
-    });
-}
+    if (containsAbusiveLanguage) {
+        return res.status(400).json({
+            message:
+                "Please use respectful language. Abusive or inappropriate language is not allowed."
+        });
+    }
 
     const finalName = is_anonymous ? null : name;
     const finalEmail = is_anonymous ? null : email;
 
     const sql = `
         INSERT INTO complaints
-        (name, email, category, is_anonymous, complaint)
-        VALUES (?, ?, ?, ?, ?)
+        (user_id, name, email, category, is_anonymous, complaint)
+        VALUES (?, ?, ?, ?, ?, ?)
     `;
 
     db.query(
         sql,
         [
+            userId,
             finalName,
             finalEmail,
             category,

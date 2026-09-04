@@ -74,12 +74,13 @@ if (containsAbusiveLanguage) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: anonymous ? null : user.name,
-          email: anonymous ? null : user.email,
-          category,
-          is_anonymous: anonymous,
-          complaint: complaint.trim(),
-        }),
+  userId: user.id,
+  name: anonymous ? null : user.name,
+  email: anonymous ? null : user.email,
+  category,
+  is_anonymous: anonymous,
+  complaint: complaint.trim(),
+}),
       });
 
       const data = await response.json();
