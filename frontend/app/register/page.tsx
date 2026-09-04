@@ -25,7 +25,7 @@ export default function Register() {
 const crnRegex = /^\d{2}(BCA|BCS|CSME|BME)\d{3}$/;
 
 if (!crnRegex.test(cleanCrn)) {
-  setError("Invalid CRN. Please enter CRN in format 24BCA210.");
+  setError("Invalid CRN.");
   return;
 }
 
