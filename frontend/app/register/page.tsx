@@ -8,7 +8,7 @@ export default function Register() {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [studentId, setStudentId] = useState("");
+  const [crn, setCrn] = useState("");
   const [password, setPassword] = useState("");
 
   const [message, setMessage] = useState("");
@@ -20,6 +20,16 @@ export default function Register() {
 
     setMessage("");
     setError("");
+    const cleanCrn = crn.trim().toUpperCase();
+
+const crnRegex = /^\d{2}(BCA|BCS|CSME|BME)\d{3}$/;
+
+if (!crnRegex.test(cleanCrn)) {
+  setError("Invalid CRN. Please enter CRN in format 24BCA210.");
+  return;
+}
+
+setLoading(true);
     setLoading(true);
 
     try {
@@ -31,7 +41,7 @@ export default function Register() {
         body: JSON.stringify({
           name,
           email,
-          studentId,
+          studentId: cleanCrn,
           password,
           anonymous,
         }),
@@ -48,7 +58,7 @@ export default function Register() {
 
       setName("");
       setEmail("");
-      setStudentId("");
+      setCrn("");
       setPassword("");
       setAnonymous(false);
     } catch {
@@ -136,21 +146,21 @@ export default function Register() {
                 />
               </div>
 
-              {/* Student ID */}
-              <div>
-                <label className="mb-2 block text-sm font-medium text-slate-300">
-                  Student ID
-                </label>
+              {/* CRN */}
+<div>
+  <label className="mb-2 block text-sm font-medium text-slate-300">
+    CRN
+  </label>
 
-                <input
-                  type="text"
-                  placeholder="Enter your student ID"
-                  value={studentId}
-                  onChange={(e) => setStudentId(e.target.value)}
-                  required
-                  className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none placeholder:text-slate-600 focus:border-blue-500"
-                />
-              </div>
+  <input
+    type="text"
+    placeholder="Enter your CRN (e.g. 24BCA210)"
+    value={crn}
+    onChange={(e) => setCrn(e.target.value.toUpperCase())}
+    required
+    className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none placeholder:text-slate-600 focus:border-blue-500"
+  />
+</div>
 
               {/* Password */}
               <div>
