@@ -300,7 +300,7 @@ app.get("/api/complaints/:trackingId", (req, res) => {
 
             if (results.length === 0) {
                 return res.status(404).json({
-                    message: "Complaint not found or you are not authorized to view it."
+                    message: "Complaint not found."
                 });
             }
 
