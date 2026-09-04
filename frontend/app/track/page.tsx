@@ -35,9 +35,23 @@ export default function TrackComplaint() {
     setLoading(true);
 
     try {
-      const response = await fetch(
-        `https://campuscare-jb23.onrender.com/api/complaints/${cleanId}`
-      );
+      const savedUser = localStorage.getItem("campusCareUser");
+
+if (!savedUser) {
+  setError("Please login before tracking a complaint.");
+  return;
+}
+
+const user = JSON.parse(savedUser);
+
+if (!user.id) {
+  setError("User information not found. Please login again.");
+  return;
+}
+
+const response = await fetch(
+  `https://campuscare-jb23.onrender.com/api/complaints/${cleanId}?userId=${user.id}`
+);
 
       const data = await response.json();
 

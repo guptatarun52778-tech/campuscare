@@ -248,6 +248,13 @@ app.post("/api/complaints", (req, res) => {
 // Track complaint
 app.get("/api/complaints/:trackingId", (req, res) => {
     const { trackingId } = req.params;
+    const { userId } = req.query;
+
+    if (!userId) {
+        return res.status(401).json({
+            message: "Please login to track your complaint."
+        });
+    }
 
     // CC3 -> 3
     if (!trackingId || !trackingId.toUpperCase().startsWith("CC")) {
@@ -268,33 +275,43 @@ app.get("/api/complaints/:trackingId", (req, res) => {
     }
 
     const sql = `
-        SELECT id, name, category, is_anonymous, complaint, status, created_at
+        SELECT
+            id,
+            category,
+            is_anonymous,
+            complaint,
+            status,
+            created_at
         FROM complaints
-        WHERE id = ?
+        WHERE id = ? AND user_id = ?
     `;
 
-    db.query(sql, [complaintId], (err, results) => {
-        if (err) {
-            console.error("Error tracking complaint:", err);
+    db.query(
+        sql,
+        [complaintId, userId],
+        (err, results) => {
+            if (err) {
+                console.error("Error tracking complaint:", err);
 
-            return res.status(500).json({
-                message: "Failed to track complaint"
+                return res.status(500).json({
+                    message: "Failed to track complaint"
+                });
+            }
+
+            if (results.length === 0) {
+                return res.status(404).json({
+                    message: "Complaint not found or you are not authorized to view it."
+                });
+            }
+
+            const complaint = results[0];
+
+            res.status(200).json({
+                trackingId: `CC${complaint.id}`,
+                complaint
             });
         }
-
-        if (results.length === 0) {
-            return res.status(404).json({
-                message: "Complaint not found"
-            });
-        }
-
-        const complaint = results[0];
-
-        res.status(200).json({
-            trackingId: `CC${complaint.id}`,
-            complaint
-        });
-    });
+    );
 });
 // Admin - Get all complaints
 app.get("/api/admin/complaints", (req, res) => {
